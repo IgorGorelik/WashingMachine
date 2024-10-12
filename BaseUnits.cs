@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Serilog.Parsing;
+using System;
 using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static WashingMachine.SwitchableUnit;
 
 namespace WashingMachine
 {
-    public abstract class BaseUnit : PictureBox
+    public abstract class BaseUnit : Control
     {
         #region Enums
         public enum MachineUnitType
@@ -25,24 +20,71 @@ namespace WashingMachine
             Heater,
             DetergentDispenser,
             Pump,
-            DisplayPanel
+            DisplayPanel,
+            DoorOpened,
+            DoorClosed
         }
         #endregion
         #region Properties
         public MachineUnitType UnitType { get; set; }
+        private PictureBox UnitImage = new PictureBox();
+        private Label UnitNameLabel = new Label();
+        private TableLayoutPanel UnitNameTableLayoutPanel = new TableLayoutPanel();
+        protected string UnitNameText
+        {
+            get { return UnitNameLabel.Text; }
+            set { UnitNameLabel.Text = value; }
+        }
+        protected Color UnitNameColor
+        {
+            get { return UnitNameLabel.ForeColor; }
+            set { UnitNameLabel.ForeColor = value; }
+        }
         #endregion
 
         #region Construction
         public BaseUnit(MachineUnitType unitType, Point location, Size size)
         {
-            SizeMode = PictureBoxSizeMode.Zoom;
+            Dock = DockStyle.Fill;
+            Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
             UnitType = unitType;
-            Location = location;
             Size = size;
 
-            Image = ImageLibrary.Instance[unitType];
+            UnitNameTableLayoutPanel.Dock = DockStyle.Fill;
+            UnitNameTableLayoutPanel.RowCount = 2;
+            UnitNameTableLayoutPanel.ColumnCount = 1;
+            UnitNameTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 70));
+            UnitNameTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 30));
+            UnitNameTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+
+            this.Controls.Add(UnitNameTableLayoutPanel);
+
+            UnitImage.SizeMode = PictureBoxSizeMode.Zoom;
+            UnitImage.Dock = DockStyle.Fill;
+            UnitImage.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            UnitImage.Size = size;
+            UnitImage.Image = ImageLibrary.Instance[unitType];
+
+            #region Label initialization
+            UnitNameLabel.BackColor = Color.Transparent;
+            UnitNameLabel.ForeColor = Color.Blue;
+            UnitNameLabel.Font = new Font("Arial", 12, FontStyle.Italic | FontStyle.Bold);
+            UnitNameLabel.Text = unitType.ToString();
+            UnitNameLabel.TextAlign = ContentAlignment.MiddleCenter;
+            UnitNameLabel.AutoSize = true;
+            UnitNameLabel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            UnitNameLabel.Dock = DockStyle.Fill;
+
+            UnitNameTableLayoutPanel.Controls.Add(UnitImage, 0, 0);
+            UnitNameTableLayoutPanel.Controls.Add(UnitNameLabel, 0, 1);
+            #endregion
+
             Logger.Instance.LogInformation($"Unit '{UnitType}' initialized.");
         }
+        #endregion
+
+        #region Methods
+        protected abstract void UpdateUnitState(EventArgs e);
         #endregion
     }
 
@@ -62,19 +104,28 @@ namespace WashingMachine
         #endregion
 
         #region Delegates
-        public delegate void ExecutionFinishedEventHandler(object sender, EventArgs e);
+        public delegate void OperationFinishedEventHandler(object sender, EventArgs e);
         public delegate void OperationFaultEventHandler(object sender, EventArgs e);
         public delegate void OperationStateChangedHandler(object sender, EventArgs e);
         #endregion
 
         #region Events
-        public event ExecutionFinishedEventHandler ExecutionFinished;
+        public event OperationFinishedEventHandler OperationFinished;
         public event OperationFaultEventHandler OperationFault;
         public event OperationStateChangedHandler OperationStateChanged;
         #endregion
 
         #region Properties
-        public bool TurnedOn { get; set; } = false;
+        protected bool turnedOn = false;
+        public bool TurnedOn
+        {
+            get { return turnedOn; }
+            set
+            {
+                turnedOn = value;
+                UnitNameColor = turnedOn ? Color.Green : Color.Blue;
+            }
+        }
         protected CancellationTokenSource TokenSource = default;
         #endregion
 
@@ -82,7 +133,10 @@ namespace WashingMachine
         public SwitchableUnit(MachineUnitType unitType, Point location, Size size) : base(unitType, location, size)
         {
             TokenSource = new CancellationTokenSource();
+            this.OperationStateChanged += SwitchableUnit_OperationStateChanged;
+            this.OperationFinished += SwitchableUnit_OperationFinished;
         }
+
         #endregion
 
         #region Methods
@@ -90,12 +144,13 @@ namespace WashingMachine
         {
             TokenSource.Cancel();
         }
+
         #endregion
 
         #region Handlers
         protected void OnExecutionFinished()
         {
-            ExecutionFinished?.Invoke(this, new EventArgs());
+            OperationFinished?.Invoke(this, new EventArgs());
         }
 
         protected void OnOperationFault()
@@ -110,6 +165,19 @@ namespace WashingMachine
         #endregion
 
         #region Overrides
+        private void SwitchableUnit_OperationStateChanged(object sender, EventArgs e)
+        {
+            UpdateUnitState(e);
+        }
+
+        private void SwitchableUnit_OperationFinished(object sender, EventArgs e)
+        {
+            Invoke(new Action(() =>
+            {
+                TurnedOn = false;
+                UnitNameText = $"{UnitType.ToString()} finished";
+            }));
+        }
         #endregion
     }
 }

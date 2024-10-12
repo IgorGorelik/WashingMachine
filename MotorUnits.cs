@@ -55,7 +55,7 @@ namespace WashingMachine
                             OnOperationStateChanged(new OperationStateChangedEventArgs(CycleTimeRemaining));
 
                             await Task.Delay(TimeSpan.FromSeconds(1));
-                            CycleTimeRemaining.Subtract(TimeSpan.FromSeconds(1));
+                            CycleTimeRemaining = CycleTimeRemaining.Subtract(TimeSpan.FromSeconds(1));
                         }
                         catch (Exception ex) { Logger.Instance.LogError(ex); }
                     }
@@ -66,6 +66,24 @@ namespace WashingMachine
             }, cancellationToken: TokenSource.Token);
         }
 
+        protected override void UpdateUnitState(EventArgs e)
+        {
+            try
+            {
+                Invoke(new Action(() =>
+                {
+                    var stateArgs = e as OperationStateChangedEventArgs;
+                    var labelText = $"{UnitType} activated, {stateArgs.TimeRemaining} remaining";
+
+                    UnitNameText = labelText;
+                    UnitNameColor = (stateArgs.TimeRemaining.TotalSeconds % 2) == 1 ? Color.DarkGreen : Color.ForestGreen;
+                }));
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.LogError(ex);
+            }
+        }
         #endregion
 
         #region Handlers
@@ -121,6 +139,14 @@ namespace WashingMachine
         #endregion
 
         #region Methods
+        protected void SwitchCycleDirection()
+        {
+            try
+            {
+                Direction = Direction == WashDirection.Clockwise ? WashDirection.CounterClockwise : WashDirection.Clockwise;
+            }
+            catch (Exception ex) { Logger.Instance.LogError(ex); }
+        }
         #endregion
 
         #region Overrides
@@ -146,8 +172,8 @@ namespace WashingMachine
 
                                     await Task.Delay(TimeSpan.FromSeconds(1));
 
-                                    MiniCycleTimeRemaining.Subtract(TimeSpan.FromSeconds(1));
-                                    CycleTimeRemaining.Subtract(TimeSpan.FromSeconds(1));
+                                    MiniCycleTimeRemaining = MiniCycleTimeRemaining.Subtract(TimeSpan.FromSeconds(1));
+                                    CycleTimeRemaining = CycleTimeRemaining.Subtract(TimeSpan.FromSeconds(1));
                                 }
                                 catch (Exception ex) { Logger.Instance.LogError(ex); }
                             }
@@ -164,13 +190,16 @@ namespace WashingMachine
             }, cancellationToken: TokenSource.Token);
         }
 
-        protected void SwitchCycleDirection()
+        protected override void UpdateUnitState(EventArgs e)
         {
-            try
+            Invoke(new Action(() =>
             {
-                Direction = Direction == WashDirection.Clockwise ? WashDirection.CounterClockwise : WashDirection.Clockwise;
-            }
-            catch (Exception ex) { Logger.Instance.LogError(ex); }
+                var stateArgs = e as WashMotorOperationStateChangedEventArgs;
+                var labelText = $"{UnitType} activated.\nRotating {stateArgs.Direction}, {stateArgs.DirectionCycleRemaining}({stateArgs.MiniCyclesRemaining}).\nTime remaining: {stateArgs.TimeRemaining}";
+
+                UnitNameText = labelText;
+                UnitNameColor = (stateArgs.TimeRemaining.TotalSeconds % 2) == 1 ? Color.DarkGreen : Color.ForestGreen;
+            }));
         }
         #endregion
 

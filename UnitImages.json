@@ -8,5 +8,7 @@
   "Heater": "",
   "DetergentDispenser": "",
   "Pump": "",
-  "DisplayPanel": ""
+  "DisplayPanel": "",
+  "DoorOpened": "Door_Opened.png",
+  "DoorClosed": "Door_Closed.png"
 }

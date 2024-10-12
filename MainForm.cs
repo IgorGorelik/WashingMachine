@@ -22,13 +22,13 @@ namespace WashingMachine
             ImageLibrary.Instance.Initialize();
 
             var test = new WashMotorUnit(TimeSpan.FromSeconds(20), 4, new Point(0, 0), new Size(300, 300));
-            test.Dock = DockStyle.Fill;
-
-            var test2 = new SpinMotorUnit(TimeSpan.FromSeconds(20), new Point(300, 0), new Size(300, 300));  
-            test2.Dock = DockStyle.Fill;
+            var test2 = new SpinMotorUnit(TimeSpan.FromSeconds(20), new Point(300, 0), new Size(300, 300));
 
             tableWashingMachine.Controls.Add(test, 0, 2);
             tableWashingMachine.Controls.Add(test2, 2, 2);
+
+            test.ExecuteCycle();
+            test2.ExecuteCycle();
         }
     }
 }
