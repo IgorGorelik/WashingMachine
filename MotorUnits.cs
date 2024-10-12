@@ -43,18 +43,26 @@ namespace WashingMachine
         {
             Task.Run(async () =>
             {
-                TurnedOn = true;
-
-                TimeSpan CycleTimeRemaining = CycleTime;
-                while (!TokenSource.IsCancellationRequested && (CycleTimeRemaining.TotalSeconds != 0))
+                try
                 {
-                    OnOperationStateChanged(new OperationStateChangedEventArgs(CycleTimeRemaining));
+                    TurnedOn = true;
 
-                    await Task.Delay(TimeSpan.FromSeconds(1));
-                    CycleTimeRemaining.Subtract(TimeSpan.FromSeconds(1));
+                    TimeSpan CycleTimeRemaining = CycleTime;
+                    while (!TokenSource.IsCancellationRequested && (CycleTimeRemaining.TotalSeconds != 0))
+                    {
+                        try
+                        {
+                            OnOperationStateChanged(new OperationStateChangedEventArgs(CycleTimeRemaining));
+
+                            await Task.Delay(TimeSpan.FromSeconds(1));
+                            CycleTimeRemaining.Subtract(TimeSpan.FromSeconds(1));
+                        }
+                        catch (Exception ex) { Logger.Instance.LogError(ex); }
+                    }
+
+                    OnExecutionFinished();
                 }
-
-                OnExecutionFinished();
+                catch (Exception ex) { Logger.Instance.LogError(ex); }
             }, cancellationToken: TokenSource.Token);
         }
 
@@ -120,27 +128,39 @@ namespace WashingMachine
         {
             Task.Run(async () =>
             {
-                TurnedOn = true;
-
-                TimeSpan CycleTimeRemaining = CycleTime;
-                while (!TokenSource.IsCancellationRequested && (MiniCyclesCount != 0))
+                try
                 {
-                    TimeSpan MiniCycleTimeRemaining = MiniCycleTime;
-                    while (!TokenSource.IsCancellationRequested && (MiniCycleTimeRemaining.TotalSeconds != 0))
+                    TurnedOn = true;
+
+                    TimeSpan CycleTimeRemaining = CycleTime;
+                    while (!TokenSource.IsCancellationRequested && (MiniCyclesCount != 0))
                     {
-                        OnOperationStateChanged(new WashMotorOperationStateChangedEventArgs(CycleTimeRemaining, Direction, MiniCycleTimeRemaining, MiniCyclesCount));
+                        try
+                        {
+                            TimeSpan MiniCycleTimeRemaining = MiniCycleTime;
+                            while (!TokenSource.IsCancellationRequested && (MiniCycleTimeRemaining.TotalSeconds != 0))
+                            {
+                                try
+                                {
+                                    OnOperationStateChanged(new WashMotorOperationStateChangedEventArgs(CycleTimeRemaining, Direction, MiniCycleTimeRemaining, MiniCyclesCount));
 
-                        await Task.Delay(TimeSpan.FromSeconds(1));
+                                    await Task.Delay(TimeSpan.FromSeconds(1));
 
-                        MiniCycleTimeRemaining.Subtract(TimeSpan.FromSeconds(1));
-                        CycleTimeRemaining.Subtract(TimeSpan.FromSeconds(1));
+                                    MiniCycleTimeRemaining.Subtract(TimeSpan.FromSeconds(1));
+                                    CycleTimeRemaining.Subtract(TimeSpan.FromSeconds(1));
+                                }
+                                catch (Exception ex) { Logger.Instance.LogError(ex); }
+                            }
+
+                            SwitchCycleDirection();
+                            MiniCyclesCount--;
+                        }
+                        catch (Exception ex) { Logger.Instance.LogError(ex); }
                     }
 
-                    SwitchCycleDirection();
-                    MiniCyclesCount--;
+                    OnExecutionFinished();
                 }
-
-                OnExecutionFinished();
+                catch (Exception ex) { Logger.Instance.LogError(ex); }
             }, cancellationToken: TokenSource.Token);
         }
 
@@ -150,10 +170,7 @@ namespace WashingMachine
             {
                 Direction = Direction == WashDirection.Clockwise ? WashDirection.CounterClockwise : WashDirection.Clockwise;
             }
-            catch (Exception)
-            {
-
-            }
+            catch (Exception ex) { Logger.Instance.LogError(ex); }
         }
         #endregion
 

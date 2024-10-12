@@ -35,12 +35,13 @@ namespace WashingMachine
         #region Construction
         public BaseUnit(MachineUnitType unitType, Point location, Size size)
         {
-            SizeMode = PictureBoxSizeMode.StretchImage;
+            SizeMode = PictureBoxSizeMode.Zoom;
             UnitType = unitType;
             Location = location;
             Size = size;
 
             Image = ImageLibrary.Instance[unitType];
+            Logger.Instance.LogInformation($"Unit '{UnitType}' initialized.");
         }
         #endregion
     }

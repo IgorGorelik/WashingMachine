@@ -34,6 +34,7 @@ namespace WashingMachine
         #endregion
 
         #region Construction
+        private ImageLibrary() { }
         public bool Initialize()
         {
             return LoadFromFile();
@@ -52,11 +53,13 @@ namespace WashingMachine
                     unitImageFileNames = JsonConvert.DeserializeObject<ConcurrentDictionary<BaseUnit.MachineUnitType, string>>(jsonString);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Logger.Instance.LogError(ex);
                 return false;
             }
 
+            Logger.Instance.LogInformation("Image library loaded.");
             return true;
         }
 
@@ -69,8 +72,9 @@ namespace WashingMachine
 
                 return image != null;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Logger.Instance.LogError(ex);
                 return false;
             }
         }
