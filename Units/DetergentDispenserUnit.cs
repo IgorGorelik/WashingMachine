@@ -5,7 +5,7 @@ namespace WashingMachine
     public class DetergentDispenserUnit : BaseUnit
     {
         #region Construction
-        public DetergentDispenserUnit() : base(MachineUnitType.DetergentDispenser, MachineUnitImageType.DetergentDispenser)
+        public DetergentDispenserUnit(Guid machineID) : base(machineID, MachineUnitType.DetergentDispenser, MachineUnitImageType.DetergentDispenser)
         {
         }
         #endregion

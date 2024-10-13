@@ -12,7 +12,7 @@ namespace WashingMachine
         #endregion
 
         #region Construction
-        public MotorUnit(MachineUnitType unitType, MachineUnitImageType unitImageType) : base(unitType, unitImageType)
+        public MotorUnit(Guid machineID, MachineUnitType unitType, MachineUnitImageType unitImageType) : base(machineID, unitType, unitImageType)
         {
         }
         #endregion
@@ -28,7 +28,7 @@ namespace WashingMachine
         #endregion
 
         #region Construction
-        public SpinMotorUnit() : base(MachineUnitType.SpinMotor, MachineUnitImageType.SpinMotor)
+        public SpinMotorUnit(Guid machineID) : base(machineID, MachineUnitType.SpinMotor, MachineUnitImageType.SpinMotor)
         {
         }
         #endregion
@@ -133,7 +133,7 @@ namespace WashingMachine
         #endregion
 
         #region Construction
-        public WashMotorUnit() : base(MachineUnitType.SpinMotor, MachineUnitImageType.SpinMotor)
+        public WashMotorUnit(Guid machineID) : base(machineID, MachineUnitType.SpinMotor, MachineUnitImageType.SpinMotor)
         {
         }
         #endregion

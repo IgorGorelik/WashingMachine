@@ -45,6 +45,7 @@ namespace WashingMachine
         #endregion
 
         #region Properties
+        public Guid MachineID { get; set; } = Guid.Empty;
         public MachineUnitType UnitType { get; protected set; }
         public MachineUnitImageType UnitImageType { get; protected set; }
         protected bool AllowUserClick = false;
@@ -73,8 +74,9 @@ namespace WashingMachine
         #endregion
 
         #region Construction
-        public BaseUnit(MachineUnitType unitType, MachineUnitImageType unitImageType)
+        public BaseUnit(Guid machineID, MachineUnitType unitType, MachineUnitImageType unitImageType)
         {
+            MachineID = machineID;
             Dock = DockStyle.Fill;
             UnitType = unitType;
             UnitImageType = unitImageType;
@@ -185,7 +187,7 @@ namespace WashingMachine
         #endregion
 
         #region Construction
-        public TurnableUnit(MachineUnitType unitType, MachineUnitImageType unitImageType) : base(unitType, unitImageType)
+        public TurnableUnit(Guid machineID, MachineUnitType unitType, MachineUnitImageType unitImageType) : base(machineID, unitType, unitImageType)
         {
             TokenSource = new CancellationTokenSource();
             this.OperationStateChanged += SwitchableUnit_OperationStateChanged;

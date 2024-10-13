@@ -130,55 +130,56 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseUnits.cs">
+    <Compile Include="Units\BaseUnits.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ControlUnit.cs" />
-    <Compile Include="DetergentDispenserUnit.cs">
+    <Compile Include="Units\DetergentDispenserUnit.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="DisplayPanelUnit.cs">
+    <Compile Include="Units\DisplayPanelUnit.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="DoorUnit.cs">
+    <Compile Include="Units\DoorUnit.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="DrumUnit.cs">
+    <Compile Include="Units\DrumUnit.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="HeaterUnit.cs">
+    <Compile Include="Units\HeaterUnit.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ImageLibrary.cs" />
-    <Compile Include="Logger.cs" />
+    <Compile Include="Utilities\ImageLibrary.cs" />
+    <Compile Include="Utilities\InteropMessenger.cs" />
+    <Compile Include="Logging\Logger.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MotorUnits.cs">
+    <Compile Include="Units\MotorUnits.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="OpenableUnitBase.cs">
+    <Compile Include="Units\OpenableUnitBase.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="PowerSupplyUnit.cs">
+    <Compile Include="Units\PowerSupplyUnit.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PumpUnit.cs">
+    <Compile Include="Units\PumpUnit.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SwitchableUnitBase.cs">
+    <Compile Include="Units\SwitchableUnitBase.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="WashingMachine.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="WashingModes.cs" />
-    <Compile Include="WaterInletValveUnit.cs">
+    <Compile Include="Utilities\WashingModes.cs" />
+    <Compile Include="Units\WaterInletValveUnit.cs">
       <SubType>Component</SubType>
     </Compile>
     <EmbeddedResource Include="MainForm.resx">
@@ -207,13 +208,13 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="UnitImages.json">
+    <None Include="Configuration\UnitImages.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="UnitsLayout.json">
+    <None Include="Configuration\UnitsLayout.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="WashingModes.json">
+    <None Include="Configuration\WashingModes.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

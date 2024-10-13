@@ -72,7 +72,7 @@ namespace WashingMachine
         {
             try
             {
-                string jsonFilePath = Path.Combine(Application.StartupPath, WashingModesFileName);
+                string jsonFilePath = Path.Combine(Application.StartupPath, "Configuration", WashingModesFileName);
                 using (var reader = new StreamReader(jsonFilePath))
                 {
                     string jsonString = reader.ReadToEnd();

@@ -6,7 +6,7 @@ namespace WashingMachine
     public class WaterInletValveUnit : SwitchableUnitBase
     {
         #region Construction
-        public WaterInletValveUnit() : base(MachineUnitType.WaterInletValve, MachineUnitImageType.WaterInletValveOn, MachineUnitImageType.WaterInletValveOff)
+        public WaterInletValveUnit(Guid machineID) : base(machineID, MachineUnitType.WaterInletValve, MachineUnitImageType.WaterInletValveOn, MachineUnitImageType.WaterInletValveOff)
         {
         }
         #endregion

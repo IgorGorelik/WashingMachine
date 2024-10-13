@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WashingMachine
 {
-    public class PumpUnit : SwitchableUnitBase
+    public class HeaterUnit : SwitchableUnitBase
     {
         #region Construction
-        public PumpUnit() : base(MachineUnitType.Pump, MachineUnitImageType.PumpOn, MachineUnitImageType.PumpOff)
+        public HeaterUnit(Guid machineID) : base(machineID, MachineUnitType.Heater, MachineUnitImageType.HeaterOn, MachineUnitImageType.HeaterOff)
         {
         }
         #endregion
@@ -30,6 +26,6 @@ namespace WashingMachine
 
         #region Handlers
 
-        #endregion
+        #endregion    
     }
 }

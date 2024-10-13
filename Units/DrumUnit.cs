@@ -41,7 +41,7 @@ namespace WashingMachine
         #endregion
 
         #region Construction
-        public DrumUnit() : base(MachineUnitType.Drum, MachineUnitImageType.DrumWithWater, MachineUnitImageType.DrumWithoutWater)
+        public DrumUnit(Guid machineID) : base(machineID, MachineUnitType.Drum, MachineUnitImageType.DrumWithWater, MachineUnitImageType.DrumWithoutWater)
         {
             AllowUserClick = false;
         }

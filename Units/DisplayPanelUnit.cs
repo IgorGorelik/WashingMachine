@@ -11,7 +11,7 @@ namespace WashingMachine
         #endregion
 
         #region Construction
-        public DisplayPanelUnit() : base(MachineUnitType.DisplayPanel, MachineUnitImageType.DisplayPanel)
+        public DisplayPanelUnit(Guid machineID) : base(machineID, MachineUnitType.DisplayPanel, MachineUnitImageType.DisplayPanel)
         {
             InitContentMenu();
         }
@@ -95,7 +95,7 @@ namespace WashingMachine
 
         private void MenuItemStart_Click(object sender, EventArgs e)
         {
-
+            InteropMessenger.Instance.FireStartWashingMessage(MachineID);
         }
         #endregion
     }

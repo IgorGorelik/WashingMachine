@@ -46,7 +46,7 @@ namespace WashingMachine
         {
             try
             {
-                string jsonFilePath = Path.Combine(Application.StartupPath, ImagesFileName);
+                string jsonFilePath = Path.Combine(Application.StartupPath, "Configuration", ImagesFileName);
                 using (var reader = new StreamReader(jsonFilePath))
                 {
                     string jsonString = reader.ReadToEnd();

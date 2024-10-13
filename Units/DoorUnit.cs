@@ -10,7 +10,7 @@ namespace WashingMachine
         #endregion
 
         #region Construction
-        public DoorUnit() : base(MachineUnitType.Door, MachineUnitImageType.DoorOpened, MachineUnitImageType.DoorClosed)
+        public DoorUnit(Guid machineID) : base(machineID, MachineUnitType.Door, MachineUnitImageType.DoorOpened, MachineUnitImageType.DoorClosed)
         {
         }
         #endregion

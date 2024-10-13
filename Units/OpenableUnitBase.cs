@@ -44,7 +44,7 @@ namespace WashingMachine
         #endregion
 
         #region Construction
-        public OpenableUnitBase(MachineUnitType unitType, MachineUnitImageType openedUnitType, MachineUnitImageType closedUnitType) : base(unitType, openedUnitType)
+        public OpenableUnitBase(Guid machineID, MachineUnitType unitType, MachineUnitImageType openedUnitType, MachineUnitImageType closedUnitType) : base(machineID, unitType, openedUnitType)
         {
             AllowUserClick = true;
 

@@ -37,7 +37,9 @@ namespace WashingMachine
         #endregion
 
         #region Properties
-        private ConcurrentDictionary<BaseUnit.MachineUnitType, UnitInfo> UnitList = new ConcurrentDictionary<BaseUnit.MachineUnitType, UnitInfo>();
+        public Guid MachineID { get; set; } = Guid.NewGuid();
+        private ConcurrentDictionary<BaseUnit.MachineUnitType, UnitInfo> UnitInfoList = new ConcurrentDictionary<BaseUnit.MachineUnitType, UnitInfo>();
+        private ConcurrentDictionary<BaseUnit.MachineUnitType, BaseUnit> UnitList = new ConcurrentDictionary<BaseUnit.MachineUnitType, BaseUnit>();
         #endregion
 
         #region Construction
@@ -46,6 +48,8 @@ namespace WashingMachine
             InitUnitsLayout();
             InitLayoutFromFile();
             InitializeUnits();
+
+            InitializeMessengerEvents();
         }
         #endregion
 
@@ -75,12 +79,14 @@ namespace WashingMachine
         }
         private void InitializeUnits()
         {
-
             try
             {
-                foreach (var unitInfo in UnitList)
+                foreach (var unitInfo in UnitInfoList)
                 {
-                    this.Controls.Add(CreateUnitByType(unitInfo.Key, unitInfo.Value.InitialState), unitInfo.Value.Location.X, unitInfo.Value.Location.Y);
+                    var unit = CreateUnitByType(unitInfo.Key, unitInfo.Value.InitialState);
+                    UnitList[unitInfo.Key] = unit;
+
+                    this.Controls.Add(unit, unitInfo.Value.Location.X, unitInfo.Value.Location.Y);
                 }
             }
             catch (Exception ex)
@@ -93,11 +99,11 @@ namespace WashingMachine
 
             try
             {
-                string jsonFilePath = Path.Combine(Application.StartupPath, layoutFileName);
+                string jsonFilePath = Path.Combine(Application.StartupPath, "Configuration", layoutFileName);
                 using (var reader = new StreamReader(jsonFilePath))
                 {
                     string jsonString = reader.ReadToEnd();
-                    UnitList = JsonConvert.DeserializeObject<ConcurrentDictionary<BaseUnit.MachineUnitType, UnitInfo>>(jsonString);
+                    UnitInfoList = JsonConvert.DeserializeObject<ConcurrentDictionary<BaseUnit.MachineUnitType, UnitInfo>>(jsonString);
                 }
             }
             catch (Exception ex)
@@ -111,41 +117,53 @@ namespace WashingMachine
             switch (unitType)
             {
                 case MachineUnitType.PowerSupply:
-                    return new PowerSupplyUnit() { IsOn = initialState == UnitInitialState.On };
+                    return new PowerSupplyUnit(MachineID) { IsOn = initialState == UnitInitialState.On };
 
                 case MachineUnitType.ControlUnit:
                     break;
 
                 case MachineUnitType.WaterInletValve:
-                    return new WaterInletValveUnit() { IsOn = initialState == UnitInitialState.On };
+                    return new WaterInletValveUnit(MachineID) { IsOn = initialState == UnitInitialState.On };
 
                 case MachineUnitType.Drum:
-                    return new DrumUnit() { HasWater = initialState == UnitInitialState.Filled };
+                    return new DrumUnit(MachineID) { HasWater = initialState == UnitInitialState.Filled };
 
                 case MachineUnitType.WashMotor:
-                    return new WashMotorUnit() { TurnedOn = initialState == UnitInitialState.On };
+                    return new WashMotorUnit(MachineID) { TurnedOn = initialState == UnitInitialState.On };
 
                 case MachineUnitType.SpinMotor:
-                    return new SpinMotorUnit() { TurnedOn = initialState == UnitInitialState.On };
+                    return new SpinMotorUnit(MachineID) { TurnedOn = initialState == UnitInitialState.On };
 
                 case MachineUnitType.Heater:
-                    return new HeaterUnit() { IsOn = initialState == UnitInitialState.On };
+                    return new HeaterUnit(MachineID) { IsOn = initialState == UnitInitialState.On };
 
                 case MachineUnitType.DetergentDispenser:
-                    return new DetergentDispenserUnit();
+                    return new DetergentDispenserUnit(MachineID);
 
                 case MachineUnitType.Pump:
-                    return new PumpUnit() { IsOn = initialState == UnitInitialState.On };
+                    return new PumpUnit(MachineID) { IsOn = initialState == UnitInitialState.On };
 
                 case MachineUnitType.DisplayPanel:
-                    return new DisplayPanelUnit();
+                    return new DisplayPanelUnit(MachineID);
 
                 case MachineUnitType.Door:
-                    return new DoorUnit() { Opened = initialState == UnitInitialState.Opened };
+                    return new DoorUnit(MachineID) { Opened = initialState == UnitInitialState.Opened };
             }
 
             return default;
         }
+        private void InitializeMessengerEvents()
+        {
+            InteropMessenger.Instance.StartWashing += Instance_StartWashing;
+        }
+        #endregion
+
+        #region Handlers
+        private void Instance_StartWashing(Guid MachineID)
+        {
+            (UnitList[MachineUnitType.WashMotor] as WashMotorUnit).ExecuteCycle();
+        }
+
         #endregion
     }
 }

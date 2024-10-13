@@ -45,7 +45,7 @@ namespace WashingMachine
         #endregion  
 
         #region Construction
-        public SwitchableUnitBase(MachineUnitType unitType, MachineUnitImageType activatedUnitType, MachineUnitImageType deactivetedUnitType) : base(unitType, deactivetedUnitType)
+        public SwitchableUnitBase(Guid machineID, MachineUnitType unitType, MachineUnitImageType activatedUnitType, MachineUnitImageType deactivetedUnitType) : base(machineID, unitType, deactivetedUnitType)
         {
             AllowUserClick = true;
 
