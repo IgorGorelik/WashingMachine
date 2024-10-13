@@ -20,6 +20,8 @@ namespace WashingMachine
             Logger.Instance.LogInformation($"Application started, version {Assembly.GetExecutingAssembly().GetName().Version}");
 
             ImageLibrary.Instance.Initialize();
+            WashingModes.Instance.Initialize();
+
             Controls.Add(new WashingMachine());
         }
     }

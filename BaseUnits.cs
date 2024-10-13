@@ -65,10 +65,10 @@ namespace WashingMachine
         {
             set { UnitImageBox.Image = value; }
         }
-        protected ContextMenu UnitContextMenu
+        protected ContextMenuStrip UnitContextMenu
         {
-            get { return UnitNameTableLayoutPanel.ContextMenu; }
-            set { UnitNameTableLayoutPanel.ContextMenu = value; }
+            get { return UnitNameTableLayoutPanel.ContextMenuStrip; }
+            set { UnitNameTableLayoutPanel.ContextMenuStrip = value; }
         }
         #endregion
 

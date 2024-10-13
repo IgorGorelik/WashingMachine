@@ -133,6 +133,7 @@
     <Compile Include="BaseUnits.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ControlUnit.cs" />
     <Compile Include="DetergentDispenserUnit.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -176,6 +177,7 @@
     <Compile Include="WashingMachine.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="WashingModes.cs" />
     <Compile Include="WaterInletValveUnit.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -211,7 +213,9 @@
     <None Include="UnitsLayout.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="WashingModes.json" />
+    <None Include="WashingModes.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
