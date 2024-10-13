@@ -63,6 +63,16 @@ namespace WashingMachine.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] Door_Opened {
+            get {
+                object obj = ResourceManager.GetObject("Door_Opened", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] Drum {
             get {
                 object obj = ResourceManager.GetObject("Drum", resourceCulture);

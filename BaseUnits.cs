@@ -1,5 +1,4 @@
-﻿using Serilog.Parsing;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
@@ -27,7 +26,7 @@ namespace WashingMachine
         #endregion
         #region Properties
         public MachineUnitType UnitType { get; set; }
-        private PictureBox UnitImage = new PictureBox();
+        private PictureBox UnitImageBox = new PictureBox();
         private Label UnitNameLabel = new Label();
         private TableLayoutPanel UnitNameTableLayoutPanel = new TableLayoutPanel();
         protected string UnitNameText
@@ -40,6 +39,10 @@ namespace WashingMachine
             get { return UnitNameLabel.ForeColor; }
             set { UnitNameLabel.ForeColor = value; }
         }
+        protected Image UnitImage
+        {
+            set { UnitImageBox.Image = value; }
+        }
         #endregion
 
         #region Construction
@@ -50,22 +53,35 @@ namespace WashingMachine
             UnitType = unitType;
             Size = size;
 
+            InitUnitLayout();
+            this.Controls.Add(UnitNameTableLayoutPanel);
+
+            InitUnitImage(unitType, size);
+            InitUnitLabel(unitType);
+
+            UnitNameTableLayoutPanel.Controls.Add(UnitImageBox, 0, 0);
+            UnitNameTableLayoutPanel.Controls.Add(UnitNameLabel, 0, 1);
+
+            UnitImageBox.MouseDoubleClick += Handle_MouseDoubleClick;
+            UnitNameLabel.MouseDoubleClick += Handle_MouseDoubleClick;
+
+            Logger.Instance.LogInformation($"Unit '{UnitType}' initialized.");
+        }
+        #endregion
+
+        #region Methods
+        protected abstract void UpdateUnitState(EventArgs e);
+        protected virtual void InitUnitLayout()
+        {
             UnitNameTableLayoutPanel.Dock = DockStyle.Fill;
             UnitNameTableLayoutPanel.RowCount = 2;
             UnitNameTableLayoutPanel.ColumnCount = 1;
             UnitNameTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 70));
             UnitNameTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 30));
             UnitNameTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
-
-            this.Controls.Add(UnitNameTableLayoutPanel);
-
-            UnitImage.SizeMode = PictureBoxSizeMode.Zoom;
-            UnitImage.Dock = DockStyle.Fill;
-            UnitImage.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            UnitImage.Size = size;
-            UnitImage.Image = ImageLibrary.Instance[unitType];
-
-            #region Label initialization
+        }
+        protected virtual void InitUnitLabel(MachineUnitType unitType)
+        {
             UnitNameLabel.BackColor = Color.Transparent;
             UnitNameLabel.ForeColor = Color.Blue;
             UnitNameLabel.Font = new Font("Arial", 12, FontStyle.Italic | FontStyle.Bold);
@@ -74,17 +90,23 @@ namespace WashingMachine
             UnitNameLabel.AutoSize = true;
             UnitNameLabel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             UnitNameLabel.Dock = DockStyle.Fill;
-
-            UnitNameTableLayoutPanel.Controls.Add(UnitImage, 0, 0);
-            UnitNameTableLayoutPanel.Controls.Add(UnitNameLabel, 0, 1);
-            #endregion
-
-            Logger.Instance.LogInformation($"Unit '{UnitType}' initialized.");
+        }
+        protected virtual void InitUnitImage(MachineUnitType unitType, Size size)
+        {
+            UnitImageBox.SizeMode = PictureBoxSizeMode.Zoom;
+            UnitImageBox.Dock = DockStyle.Fill;
+            UnitImageBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            UnitImageBox.Size = size;
+            UnitImageBox.Image = ImageLibrary.Instance[unitType];
         }
         #endregion
 
-        #region Methods
-        protected abstract void UpdateUnitState(EventArgs e);
+        #region Handlers
+        private void Handle_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            OnMouseDoubleClick(e);
+        }
+
         #endregion
     }
 
@@ -148,17 +170,17 @@ namespace WashingMachine
         #endregion
 
         #region Handlers
-        protected void OnExecutionFinished()
+        protected virtual void OnExecutionFinished()
         {
             OperationFinished?.Invoke(this, new EventArgs());
         }
 
-        protected void OnOperationFault()
+        protected virtual void OnOperationFault()
         {
             OperationFault?.Invoke(this, new EventArgs());
         }
 
-        protected void OnOperationStateChanged(EventArgs args)
+        protected virtual void OnOperationStateChanged(EventArgs args)
         {
             OperationStateChanged?.Invoke(this, args);
         }

@@ -133,6 +133,9 @@
     <Compile Include="BaseUnits.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="DoorUnit.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ImageLibrary.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="MainForm.cs">
@@ -154,11 +157,13 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -184,6 +189,14 @@
     <EmbeddedResource Include="Images\motor.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\Door_Closed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Door_Opened.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

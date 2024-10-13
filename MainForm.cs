@@ -23,12 +23,12 @@ namespace WashingMachine
 
             var test = new WashMotorUnit(TimeSpan.FromSeconds(20), 4, new Point(0, 0), new Size(300, 300));
             var test2 = new SpinMotorUnit(TimeSpan.FromSeconds(20), new Point(300, 0), new Size(300, 300));
+            var test3 = new DoorUnit(new Point(300, 0), new Size(300, 300));
 
             tableWashingMachine.Controls.Add(test, 0, 2);
             tableWashingMachine.Controls.Add(test2, 2, 2);
+            tableWashingMachine.Controls.Add(test3, 1, 1);
 
-            test.ExecuteCycle();
-            test2.ExecuteCycle();
         }
     }
 }
