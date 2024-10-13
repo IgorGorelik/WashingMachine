@@ -12,9 +12,8 @@ namespace WashingMachine
         #endregion
 
         #region Construction
-        public MotorUnit(TimeSpan cycleTime, MachineUnitType unitType, Point location, Size size) : base(unitType, location, size)
+        public MotorUnit(MachineUnitType unitType, Size size) : base(unitType, size)
         {
-            CycleTime = cycleTime;
         }
         #endregion
 
@@ -29,13 +28,16 @@ namespace WashingMachine
         #endregion
 
         #region Construction
-        public SpinMotorUnit(TimeSpan cycleTime, Point location, Size size) : base(cycleTime, MachineUnitType.SpinMotor, location, size)
+        public SpinMotorUnit(Size size) : base(MachineUnitType.SpinMotor, size)
         {
         }
         #endregion
 
         #region Methods
-
+        public void ConfigureCycle(TimeSpan cycleTime)
+        {
+            CycleTime = cycleTime;
+        }
         #endregion
 
         #region Overrides
@@ -131,14 +133,19 @@ namespace WashingMachine
         #endregion
 
         #region Construction
-        public WashMotorUnit(TimeSpan miniCycleTime, int miniCyclesCount, Point location, Size size) : base(TimeSpan.FromSeconds(miniCycleTime.TotalSeconds * miniCyclesCount), MachineUnitType.WashMotor, location, size)
+        public WashMotorUnit(Size size) : base(MachineUnitType.WashMotor, size)
         {
-            MiniCyclesCount = miniCyclesCount;
-            MiniCycleTime = miniCycleTime;
         }
         #endregion
 
         #region Methods
+        protected void ConfigureCycle(TimeSpan miniCycleTime, int miniCyclesCount)
+        {
+            MiniCyclesCount = miniCyclesCount;
+            MiniCycleTime = miniCycleTime;
+            CycleTime = TimeSpan.FromSeconds(miniCycleTime.TotalSeconds * miniCyclesCount);
+        }
+
         protected void SwitchCycleDirection()
         {
             try

@@ -10,7 +10,8 @@ namespace WashingMachine
         #region Enums
         public enum MachineUnitType
         {
-            PowerSupply,
+            PowerSupplyOn,
+            PowerSupplyOff,
             ControlUnit,
             WaterInletValve,
             Drum,
@@ -21,11 +22,14 @@ namespace WashingMachine
             Pump,
             DisplayPanel,
             DoorOpened,
-            DoorClosed
+            DoorClosed,
+            DrumWithWater,
+            DrumWithoutWater
         }
         #endregion
         #region Properties
-        public MachineUnitType UnitType { get; set; }
+        public MachineUnitType UnitType { get; protected set; }
+        protected bool AllowUserClick = false;
         private PictureBox UnitImageBox = new PictureBox();
         private Label UnitNameLabel = new Label();
         private TableLayoutPanel UnitNameTableLayoutPanel = new TableLayoutPanel();
@@ -46,7 +50,7 @@ namespace WashingMachine
         #endregion
 
         #region Construction
-        public BaseUnit(MachineUnitType unitType, Point location, Size size)
+        public BaseUnit(MachineUnitType unitType, Size size)
         {
             Dock = DockStyle.Fill;
             Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
@@ -104,7 +108,10 @@ namespace WashingMachine
         #region Handlers
         private void Handle_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            OnMouseDoubleClick(e);
+            if (AllowUserClick)
+            {
+                OnMouseDoubleClick(e);
+            }
         }
 
         #endregion
@@ -152,7 +159,7 @@ namespace WashingMachine
         #endregion
 
         #region Construction
-        public SwitchableUnit(MachineUnitType unitType, Point location, Size size) : base(unitType, location, size)
+        public SwitchableUnit(MachineUnitType unitType, Size size) : base(unitType, size)
         {
             TokenSource = new CancellationTokenSource();
             this.OperationStateChanged += SwitchableUnit_OperationStateChanged;

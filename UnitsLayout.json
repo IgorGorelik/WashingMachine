@@ -1,0 +1,22 @@
+{
+  "PowerSupplyOff": {
+    "Location": "0, 0",
+    "Dimensions": "300, 300"
+  },
+  "Drum": {
+    "Location": "1, 2",
+    "Dimensions": "300, 300"
+  },
+  "WashMotor": {
+    "Location": "0, 2",
+    "Dimensions": "300, 300"
+  },
+  "SpinMotor": {
+    "Location": "2, 2",
+    "Dimensions": "300, 300"
+  },
+  "DoorOpened": {
+    "Location": "1, 1",
+    "Dimensions": "300, 300"
+  }
+}

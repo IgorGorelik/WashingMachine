@@ -1,53 +1,52 @@
-﻿using System;
-using System.Drawing;
-using System.Security.Cryptography;
+﻿using System.Drawing;
 using System.Windows.Forms;
+using System;
 
 namespace WashingMachine
 {
-    public class DoorUnit : BaseUnit
+    public class PowerSupplyUnit : BaseUnit
     {
         #region Definitions
-        public class DoorStateChangedEventArgs : EventArgs
+        public class PowerSupplyStateChangedEventArgs : EventArgs
         {
             #region Properties
-            public bool Opened { get; set; }
+            public bool IsOn { get; set; }
             #endregion
 
             #region Construction
-            public DoorStateChangedEventArgs(bool opened) { Opened = opened; }
+            public PowerSupplyStateChangedEventArgs(bool isOn) { IsOn = isOn; }
             #endregion
         }
         #endregion
 
         #region Delegates
-        public delegate void DoorStateChangedEventHandler(object sender, EventArgs e);
+        public delegate void PowerSupplyStateChangedEventHandler(object sender, EventArgs e);
         #endregion
 
         #region Events
-        public event DoorStateChangedEventHandler DoorStateChanged;
+        public event PowerSupplyStateChangedEventHandler PowerSupplyStateChanged;
         #endregion
 
         #region Properties
-        private bool doorOpened = true;
-        public bool Opened
+        private bool isOn = true;
+        public bool IsOn
         {
-            get { return doorOpened; }
+            get { return isOn; }
             set
             {
-                doorOpened = value;
-                SwitchDoorState();
-                OnDoorStateChanged(doorOpened);
+                isOn = value;
+                SwitchPowerSupplyState();
+                OnPowerSupplyStateChanged(isOn);
             }
         }
 
-        private void SwitchDoorState()
+        private void SwitchPowerSupplyState()
         {
             try
             {
-                UnitType = doorOpened ? MachineUnitType.DoorOpened : MachineUnitType.DoorClosed;
+                UnitType = isOn ? MachineUnitType.PowerSupplyOn : MachineUnitType.PowerSupplyOff;
                 UnitImage = ImageLibrary.Instance[UnitType];
-                UnitNameColor = doorOpened ? Color.Red : Color.Green;
+                UnitNameColor = isOn ? Color.Green : Color.Red;
                 UnitNameText = UnitType.ToString();
             }
             catch (Exception ex)
@@ -58,7 +57,7 @@ namespace WashingMachine
         #endregion
 
         #region Construction
-        public DoorUnit(Size size) : base(MachineUnitType.DoorOpened, size)
+        public PowerSupplyUnit(Size size) : base(MachineUnitType.PowerSupplyOff, size)
         {
             AllowUserClick = true;
         }
@@ -73,7 +72,7 @@ namespace WashingMachine
         protected override void OnMouseDoubleClick(MouseEventArgs e)
         {
             base.OnMouseDoubleClick(e);
-            Opened = !Opened;
+            IsOn = !IsOn;
         }
 
         protected override void UpdateUnitState(EventArgs e)
@@ -83,10 +82,10 @@ namespace WashingMachine
         #endregion
 
         #region Handlers
-        protected virtual void OnDoorStateChanged(bool opened)
+        protected virtual void OnPowerSupplyStateChanged(bool opened)
         {
-            DoorStateChanged?.Invoke(this, new DoorStateChangedEventArgs(opened));
+            PowerSupplyStateChanged?.Invoke(this, new PowerSupplyStateChangedEventArgs(opened));
         }
-        #endregion
+        #endregion    
     }
 }

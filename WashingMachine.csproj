@@ -136,6 +136,9 @@
     <Compile Include="DoorUnit.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="DrumUnit.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ImageLibrary.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="MainForm.cs">
@@ -147,8 +150,12 @@
     <Compile Include="MotorUnits.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="PowerSupplyUnit.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WashingMachine.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -178,6 +185,9 @@
     <None Include="UnitImages.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="UnitsLayout.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -191,12 +201,28 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\Door_Closed.png">
+    <EmbeddedResource Include="Images\Door_Closed.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\Door_Opened.png">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Images\Door_Opened.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Images\DrumWithoutWater.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Images\DrumWithWater.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\PowerSupplyOn.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\PowerSupplyOff.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -21,14 +21,19 @@ namespace WashingMachine
 
             ImageLibrary.Instance.Initialize();
 
-            var test = new WashMotorUnit(TimeSpan.FromSeconds(20), 4, new Point(0, 0), new Size(300, 300));
-            var test2 = new SpinMotorUnit(TimeSpan.FromSeconds(20), new Point(300, 0), new Size(300, 300));
-            var test3 = new DoorUnit(new Point(300, 0), new Size(300, 300));
+            var washMotorUnit = new WashMotorUnit(new Size(300, 300));
+            var spinMotorUnit = new SpinMotorUnit(new Size(300, 300));
+            var doorUnit = new DoorUnit(new Size(300, 300));
+            var drumUnit = new DrumUnit(new Size(300, 300));
+            var powerSupplyUnit = new PowerSupplyUnit(new Size(300, 300));
 
-            tableWashingMachine.Controls.Add(test, 0, 2);
-            tableWashingMachine.Controls.Add(test2, 2, 2);
-            tableWashingMachine.Controls.Add(test3, 1, 1);
+            tableWashingMachine.Controls.Add(washMotorUnit, 0, 2);
+            tableWashingMachine.Controls.Add(spinMotorUnit, 2, 2);
+            tableWashingMachine.Controls.Add(doorUnit, 1, 1);
+            tableWashingMachine.Controls.Add(drumUnit, 1, 2);
+            tableWashingMachine.Controls.Add(powerSupplyUnit, 0, 0);
 
+            WashingMachine machine = new WashingMachine();
         }
     }
 }

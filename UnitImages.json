@@ -1,8 +1,11 @@
 {
-  "PowerSupply": "",
+  "PowerSupplyOn": "PowerSupplyOn.png",
+  "PowerSupplyOff": "PowerSupplyOff.png",
   "ControlUnit": "",
   "WaterInletValve": "",
   "Drum": "Drum.png",
+  "DrumWithWater": "DrumWithWater.jpg",
+  "DrumWithoutWater": "DrumWithoutWater.png",
   "WashMotor": "Motor.jpg",
   "SpinMotor": "Motor.jpg",
   "Heater": "",
