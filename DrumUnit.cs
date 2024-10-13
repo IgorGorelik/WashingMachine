@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static WashingMachine.DoorUnit;
-using static WashingMachine.DrumUnit;
 
 namespace WashingMachine
 {
-    public class DrumUnit : BaseUnit
+    public class DrumUnit : SwitchableUnitBase
     {
         #region Definitions
         public class DrumStateChangedEventArgs : EventArgs
@@ -33,7 +27,7 @@ namespace WashingMachine
         #endregion
 
         #region Properties
-        private bool hasWater = false;
+        protected bool hasWater = false;
         public bool HasWater
         {
             get { return hasWater; }
@@ -41,39 +35,69 @@ namespace WashingMachine
             {
                 hasWater = value;
                 SwitchWaterState();
-                OnDoorStateChanged(hasWater);
+                OnWaterStateChanged(hasWater);
             }
         }
         #endregion
 
         #region Construction
-        public DrumUnit(Size size) : base(MachineUnitType.Drum, size)
+        public DrumUnit() : base(MachineUnitType.Drum, MachineUnitImageType.DrumWithWater, MachineUnitImageType.DrumWithoutWater)
         {
+            AllowUserClick = false;
         }
         #endregion
 
         #region Methods
-        public virtual void SwitchWaterState()
+        protected virtual string GetWaterLabelText()
         {
-            UnitType = HasWater ? MachineUnitType.DrumWithWater : MachineUnitType.DrumWithoutWater;
-            UnitImage = ImageLibrary.Instance[UnitType];
-            UnitNameColor = HasWater ? Color.Green : Color.Blue;
-            UnitNameText = UnitType.ToString();
+            return hasWater ? "is filled with water" : "is empty";
         }
-
+        protected virtual void SwitchWaterState()
+        {
+            try
+            {
+                UnitImageType = hasWater ? ActivatedUnitType : DeactivatedUnitType;
+                UnitImage = ImageLibrary.Instance[UnitImageType];
+                UnitNameColor = hasWater ? Color.Green : Color.Red;
+                UnitNameText = $"{UnitType} {GetWaterLabelText()}";
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.LogError(ex);
+            }
+        }
         #endregion
 
         #region Overrides
+        protected override void InitUnitLabel(MachineUnitType unitType)
+        {
+            base.InitUnitLabel(unitType);
+            UnitNameColor = hasWater ? Color.Green : Color.Red;
+            UnitNameText = $"{UnitType} {GetWaterLabelText()}";
+        }
+
+        protected override void SwitchState()
+        {
+            try
+            {
+                // Hiding original switch state based on IsOn property
+            }
+            catch (Exception ex)
+            {
+                Logger.Instance.LogError(ex);
+            }
+        }
         protected override void UpdateUnitState(EventArgs e)
         {
         }
         #endregion
 
         #region Handlers
-        protected virtual void OnDoorStateChanged(bool hasWater)
+        protected virtual void OnWaterStateChanged(bool hasWater)
         {
             DrumStateChanged?.Invoke(this, new DrumStateChangedEventArgs(hasWater));
         }
+
         #endregion
     }
 }

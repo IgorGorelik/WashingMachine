@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Drawing;
-using System.Windows.Forms;
 
 namespace WashingMachine
 {
-    public class PowerSupplyUnit : SwitchableUnitBase
+    public class HeaterUnit : SwitchableUnitBase
     {
-
         #region Construction
-        public PowerSupplyUnit() : base(MachineUnitType.PowerSupply, MachineUnitImageType.PowerSupplyOn, MachineUnitImageType.PowerSupplyOff)
+        public HeaterUnit() : base(MachineUnitType.Heater, MachineUnitImageType.HeaterOn, MachineUnitImageType.HeaterOff)
         {
         }
         #endregion

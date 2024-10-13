@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Drawing;
-using System.Windows.Forms;
 
 namespace WashingMachine
 {
-    public class PowerSupplyUnit : SwitchableUnitBase
+    public class WaterInletValveUnit : SwitchableUnitBase
     {
-
         #region Construction
-        public PowerSupplyUnit() : base(MachineUnitType.PowerSupply, MachineUnitImageType.PowerSupplyOn, MachineUnitImageType.PowerSupplyOff)
+        public WaterInletValveUnit() : base(MachineUnitType.WaterInletValve, MachineUnitImageType.WaterInletValveOn, MachineUnitImageType.WaterInletValveOff)
         {
         }
         #endregion

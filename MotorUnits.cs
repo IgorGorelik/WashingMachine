@@ -5,14 +5,14 @@ using System.Timers;
 
 namespace WashingMachine
 {
-    public abstract class MotorUnit : SwitchableUnit
+    public abstract class MotorUnit : TurnableUnit
     {
         #region Properties
         protected TimeSpan CycleTime = TimeSpan.Zero;
         #endregion
 
         #region Construction
-        public MotorUnit(MachineUnitType unitType, Size size) : base(unitType, size)
+        public MotorUnit(MachineUnitType unitType, MachineUnitImageType unitImageType) : base(unitType, unitImageType)
         {
         }
         #endregion
@@ -28,7 +28,7 @@ namespace WashingMachine
         #endregion
 
         #region Construction
-        public SpinMotorUnit(Size size) : base(MachineUnitType.SpinMotor, size)
+        public SpinMotorUnit() : base(MachineUnitType.SpinMotor, MachineUnitImageType.SpinMotor)
         {
         }
         #endregion
@@ -133,7 +133,7 @@ namespace WashingMachine
         #endregion
 
         #region Construction
-        public WashMotorUnit(Size size) : base(MachineUnitType.WashMotor, size)
+        public WashMotorUnit() : base(MachineUnitType.SpinMotor, MachineUnitImageType.SpinMotor)
         {
         }
         #endregion

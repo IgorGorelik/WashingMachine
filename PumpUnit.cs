@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace WashingMachine
 {
-    public class PowerSupplyUnit : SwitchableUnitBase
+    public class PumpUnit : SwitchableUnitBase
     {
-
         #region Construction
-        public PowerSupplyUnit() : base(MachineUnitType.PowerSupply, MachineUnitImageType.PowerSupplyOn, MachineUnitImageType.PowerSupplyOff)
+        public PumpUnit() : base(MachineUnitType.Pump, MachineUnitImageType.PumpOn, MachineUnitImageType.PumpOff)
         {
         }
         #endregion
@@ -28,6 +30,6 @@ namespace WashingMachine
 
         #region Handlers
 
-        #endregion    
+        #endregion
     }
 }

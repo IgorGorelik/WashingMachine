@@ -1,66 +1,17 @@
 ﻿using System;
 using System.Drawing;
-using System.Security.Cryptography;
 using System.Windows.Forms;
 
 namespace WashingMachine
 {
-    public class DoorUnit : BaseUnit
+    public class DoorUnit : OpenableUnitBase
     {
-        #region Definitions
-        public class DoorStateChangedEventArgs : EventArgs
-        {
-            #region Properties
-            public bool Opened { get; set; }
-            #endregion
-
-            #region Construction
-            public DoorStateChangedEventArgs(bool opened) { Opened = opened; }
-            #endregion
-        }
-        #endregion
-
-        #region Delegates
-        public delegate void DoorStateChangedEventHandler(object sender, EventArgs e);
-        #endregion
-
-        #region Events
-        public event DoorStateChangedEventHandler DoorStateChanged;
-        #endregion
-
         #region Properties
-        private bool doorOpened = true;
-        public bool Opened
-        {
-            get { return doorOpened; }
-            set
-            {
-                doorOpened = value;
-                SwitchDoorState();
-                OnDoorStateChanged(doorOpened);
-            }
-        }
-
-        private void SwitchDoorState()
-        {
-            try
-            {
-                UnitType = doorOpened ? MachineUnitType.DoorOpened : MachineUnitType.DoorClosed;
-                UnitImage = ImageLibrary.Instance[UnitType];
-                UnitNameColor = doorOpened ? Color.Red : Color.Green;
-                UnitNameText = UnitType.ToString();
-            }
-            catch (Exception ex)
-            {
-                Logger.Instance.LogError(ex);
-            }
-        }
         #endregion
 
         #region Construction
-        public DoorUnit(Size size) : base(MachineUnitType.DoorOpened, size)
+        public DoorUnit() : base(MachineUnitType.Door, MachineUnitImageType.DoorOpened, MachineUnitImageType.DoorClosed)
         {
-            AllowUserClick = true;
         }
         #endregion
 
@@ -70,22 +21,10 @@ namespace WashingMachine
             base.InitUnitLabel(unitType);
             UnitNameColor = Color.Red;
         }
-        protected override void OnMouseDoubleClick(MouseEventArgs e)
-        {
-            base.OnMouseDoubleClick(e);
-            Opened = !Opened;
-        }
 
         protected override void UpdateUnitState(EventArgs e)
         {
 
-        }
-        #endregion
-
-        #region Handlers
-        protected virtual void OnDoorStateChanged(bool opened)
-        {
-            DoorStateChanged?.Invoke(this, new DoorStateChangedEventArgs(opened));
         }
         #endregion
     }

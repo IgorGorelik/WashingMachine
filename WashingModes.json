@@ -1,0 +1,92 @@
+{
+  "Normal": {
+    "Temperature": "40",
+    "WashingCycleTime": "60",
+    "WashingCycles": 6,
+    "RinseCycle": 20,
+    "SpinCycle": 30,
+    "PrewashCycle": 0,
+    "Actions": [
+      "OpenWaterValve",
+      "PumpWater",
+      "Heat",
+      "DispenseDetegent",
+      "Wash",
+      "Drin",
+      "PumpWater",
+      "Rinse",
+      "Drain",
+      "Spin",
+      "Finish"
+    ]
+  },
+  "Medium": {
+    "Temperature": "60",
+    "WashingCycleTime": "60",
+    "WashingCycles": 6,
+    "RinseCycle": 20,
+    "SpinCycle": 30,
+    "PrewashCycle": 10,
+    "Actions": [
+      "OpenWaterValve",
+      "PumpWater",
+      "Prewash",
+      "Drain",
+      "PumpWater",
+      "Heat",
+      "DispenseDetegent",
+      "Wash",
+      "Drin",
+      "PumpWater",
+      "Rinse",
+      "Drain",
+      "Spin",
+      "Finish"
+    ]
+  },
+  "Heavy": {
+    "Temperature": "90",
+    "WashingCycleTime": "90",
+    "WashingCycles": 6,
+    "RinseCycle": 20,
+    "SpinCycle": 30,
+    "PrewashCycle": 20,
+    "Actions": [
+      "OpenWaterValve",
+      "PumpWater",
+      "Prewash",
+      "Drain",
+      "PumpWater",
+      "Heat",
+      "DispenseDetegent",
+      "Wash",
+      "Drin",
+      "PumpWater",
+      "Rinse",
+      "Drain",
+      "Spin",
+      "Finish"
+    ]
+  },
+  "Quick": {
+    "Temperature": "30",
+    "WashingCycleTime": "30",
+    "WashingCycles": 3,
+    "RinseCycle": 10,
+    "SpinCycle": 20,
+    "PrewashCycle": 0,
+    "Actions": [
+      "OpenWaterValve",
+      "PumpWater",
+      "Heat",
+      "DispenseDetegent",
+      "Wash",
+      "Drin",
+      "PumpWater",
+      "Rinse",
+      "Drain",
+      "Spin",
+      "Finish"
+    ]
+  }
+}

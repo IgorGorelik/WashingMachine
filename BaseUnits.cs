@@ -10,8 +10,7 @@ namespace WashingMachine
         #region Enums
         public enum MachineUnitType
         {
-            PowerSupplyOn,
-            PowerSupplyOff,
+            PowerSupply,
             ControlUnit,
             WaterInletValve,
             Drum,
@@ -21,14 +20,33 @@ namespace WashingMachine
             DetergentDispenser,
             Pump,
             DisplayPanel,
+            Door
+        }
+        public enum MachineUnitImageType
+        {
+            PowerSupplyOn,
+            PowerSupplyOff,
+            ControlUnit,
+            WaterInletValveOn,
+            WaterInletValveOff,
+            WashMotor,
+            SpinMotor,
+            HeaterOn,
+            HeaterOff,
+            DetergentDispenser,
+            PumpOn,
+            PumpOff,
+            DisplayPanel,
             DoorOpened,
             DoorClosed,
             DrumWithWater,
             DrumWithoutWater
         }
         #endregion
+
         #region Properties
         public MachineUnitType UnitType { get; protected set; }
+        public MachineUnitImageType UnitImageType { get; protected set; }
         protected bool AllowUserClick = false;
         private PictureBox UnitImageBox = new PictureBox();
         private Label UnitNameLabel = new Label();
@@ -47,20 +65,24 @@ namespace WashingMachine
         {
             set { UnitImageBox.Image = value; }
         }
+        protected ContextMenu UnitContextMenu
+        {
+            get { return UnitNameTableLayoutPanel.ContextMenu; }
+            set { UnitNameTableLayoutPanel.ContextMenu = value; }
+        }
         #endregion
 
         #region Construction
-        public BaseUnit(MachineUnitType unitType, Size size)
+        public BaseUnit(MachineUnitType unitType, MachineUnitImageType unitImageType)
         {
             Dock = DockStyle.Fill;
-            Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
             UnitType = unitType;
-            Size = size;
+            UnitImageType = unitImageType;
 
             InitUnitLayout();
             this.Controls.Add(UnitNameTableLayoutPanel);
 
-            InitUnitImage(unitType, size);
+            InitUnitImage(UnitImageType);
             InitUnitLabel(unitType);
 
             UnitNameTableLayoutPanel.Controls.Add(UnitImageBox, 0, 0);
@@ -69,6 +91,7 @@ namespace WashingMachine
             UnitImageBox.MouseDoubleClick += Handle_MouseDoubleClick;
             UnitNameLabel.MouseDoubleClick += Handle_MouseDoubleClick;
 
+            this.SizeChanged += BaseUnit_SizeChanged;
             Logger.Instance.LogInformation($"Unit '{UnitType}' initialized.");
         }
         #endregion
@@ -95,12 +118,11 @@ namespace WashingMachine
             UnitNameLabel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             UnitNameLabel.Dock = DockStyle.Fill;
         }
-        protected virtual void InitUnitImage(MachineUnitType unitType, Size size)
+        protected virtual void InitUnitImage(MachineUnitImageType unitType)
         {
             UnitImageBox.SizeMode = PictureBoxSizeMode.Zoom;
             UnitImageBox.Dock = DockStyle.Fill;
             UnitImageBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            UnitImageBox.Size = size;
             UnitImageBox.Image = ImageLibrary.Instance[unitType];
         }
         #endregion
@@ -114,10 +136,14 @@ namespace WashingMachine
             }
         }
 
+        private void BaseUnit_SizeChanged(object sender, EventArgs e)
+        {
+            UnitImageBox.Size = this.Size;
+        }
         #endregion
     }
 
-    public abstract class SwitchableUnit : BaseUnit
+    public abstract class TurnableUnit : BaseUnit
     {
         #region Definitions
         public class OperationStateChangedEventArgs : EventArgs
@@ -159,7 +185,7 @@ namespace WashingMachine
         #endregion
 
         #region Construction
-        public SwitchableUnit(MachineUnitType unitType, Size size) : base(unitType, size)
+        public TurnableUnit(MachineUnitType unitType, MachineUnitImageType unitImageType) : base(unitType, unitImageType)
         {
             TokenSource = new CancellationTokenSource();
             this.OperationStateChanged += SwitchableUnit_OperationStateChanged;

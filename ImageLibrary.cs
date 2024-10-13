@@ -16,10 +16,10 @@ namespace WashingMachine
         #region Properties
         private static readonly Lazy<ImageLibrary> singletonInstance = new Lazy<ImageLibrary>(() => new ImageLibrary());
         public static ImageLibrary Instance => singletonInstance.Value;
-        private ConcurrentDictionary<BaseUnit.MachineUnitType, string> unitImageFileNames = default;
-        private ConcurrentDictionary<BaseUnit.MachineUnitType, Image> unitImages = new ConcurrentDictionary<BaseUnit.MachineUnitType, Image>();
+        private ConcurrentDictionary<BaseUnit.MachineUnitImageType, string> unitImageFileNames = default;
+        private ConcurrentDictionary<BaseUnit.MachineUnitImageType, Image> unitImages = new ConcurrentDictionary<BaseUnit.MachineUnitImageType, Image>();
 
-        public Image this[BaseUnit.MachineUnitType unitType]
+        public Image this[BaseUnit.MachineUnitImageType unitType]
         {
             get
             {
@@ -50,7 +50,7 @@ namespace WashingMachine
                 using (var reader = new StreamReader(jsonFilePath))
                 {
                     string jsonString = reader.ReadToEnd();
-                    unitImageFileNames = JsonConvert.DeserializeObject<ConcurrentDictionary<BaseUnit.MachineUnitType, string>>(jsonString);
+                    unitImageFileNames = JsonConvert.DeserializeObject<ConcurrentDictionary<BaseUnit.MachineUnitImageType, string>>(jsonString);
                 }
             }
             catch (Exception ex)
@@ -63,7 +63,7 @@ namespace WashingMachine
             return true;
         }
 
-        private bool LoadImage(BaseUnit.MachineUnitType unitType)
+        private bool LoadImage(BaseUnit.MachineUnitImageType unitType)
         {
             try
             {
