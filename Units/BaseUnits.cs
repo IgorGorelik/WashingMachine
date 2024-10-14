@@ -33,7 +33,8 @@ namespace WashingMachine
             SpinMotor,
             HeaterOn,
             HeaterOff,
-            DetergentDispenser,
+            DetergentDispenserOn,
+            DetergentDispenserOff,
             PumpOn,
             PumpOff,
             DisplayPanel,
@@ -71,11 +72,14 @@ namespace WashingMachine
             get { return UnitNameTableLayoutPanel.ContextMenuStrip; }
             set { UnitNameTableLayoutPanel.ContextMenuStrip = value; }
         }
+        protected CancellationTokenSource TokenSource = default;
         #endregion
 
         #region Construction
         public BaseUnit(Guid machineID, MachineUnitType unitType, MachineUnitImageType unitImageType)
         {
+            TokenSource = new CancellationTokenSource();
+
             MachineID = machineID;
             Dock = DockStyle.Fill;
             UnitType = unitType;
@@ -92,6 +96,8 @@ namespace WashingMachine
 
             UnitImageBox.MouseDoubleClick += Handle_MouseDoubleClick;
             UnitNameLabel.MouseDoubleClick += Handle_MouseDoubleClick;
+
+            InteropMessenger.Instance.EnableUnit += Handle_EnableUnit;
 
             this.SizeChanged += BaseUnit_SizeChanged;
             Logger.Instance.LogInformation($"Unit '{UnitType}' initialized.");
@@ -130,6 +136,11 @@ namespace WashingMachine
         #endregion
 
         #region Handlers
+        private void Handle_EnableUnit(Guid MachineID, bool enable)
+        {
+            Enabled = enable;
+        }
+
         private void Handle_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (AllowUserClick)
@@ -183,13 +194,11 @@ namespace WashingMachine
                 UnitNameColor = turnedOn ? Color.Green : Color.Blue;
             }
         }
-        protected CancellationTokenSource TokenSource = default;
         #endregion
 
         #region Construction
         public TurnableUnit(Guid machineID, MachineUnitType unitType, MachineUnitImageType unitImageType) : base(machineID, unitType, unitImageType)
         {
-            TokenSource = new CancellationTokenSource();
             this.OperationStateChanged += SwitchableUnit_OperationStateChanged;
             this.OperationFinished += SwitchableUnit_OperationFinished;
         }
@@ -201,7 +210,6 @@ namespace WashingMachine
         {
             TokenSource.Cancel();
         }
-
         #endregion
 
         #region Handlers

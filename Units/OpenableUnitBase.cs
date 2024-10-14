@@ -20,7 +20,7 @@ namespace WashingMachine
         #endregion
 
         #region Delegates
-        public delegate void OpenStateChangedEventHandler(object sender, EventArgs e);
+        public delegate void OpenStateChangedEventHandler(object sender, OpenStateChangedEventArgs e);
         #endregion
 
         #region Events
@@ -41,6 +41,7 @@ namespace WashingMachine
         }
         protected MachineUnitImageType OpenedUnitType { get; set; }
         protected MachineUnitImageType ClosedUnitType { get; set; }
+        public virtual bool CanChangeState { get { return true; } }
         #endregion
 
         #region Construction
@@ -81,7 +82,11 @@ namespace WashingMachine
         protected override void OnMouseDoubleClick(MouseEventArgs e)
         {
             base.OnMouseDoubleClick(e);
-            Opened = !Opened;
+            
+            if (CanChangeState)
+            {
+                Opened = !Opened;
+            }
         }
 
         protected override void UpdateUnitState(EventArgs e)

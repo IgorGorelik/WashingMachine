@@ -24,10 +24,10 @@ namespace WashingMachine
         {
 
         }
+
         #endregion
 
         #region Handlers
-
         #endregion    
     }
 }

@@ -26,6 +26,14 @@ namespace WashingMachine
         {
 
         }
+
+        public override bool CanChangeState
+        {
+            get
+            {
+                return !InteropMessenger.Instance.FireIsWashingStartedMessage(MachineID);
+            }
+        }
         #endregion
     }
 }

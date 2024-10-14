@@ -14,11 +14,22 @@ namespace WashingMachine
         #region Construction
         public MotorUnit(Guid machineID, MachineUnitType unitType, MachineUnitImageType unitImageType) : base(machineID, unitType, unitImageType)
         {
+            InteropMessenger.Instance.CancelProcess += MotorUnit_CancelProcess;
         }
         #endregion
 
         #region Methods
         public abstract void ExecuteCycle();
+        #endregion
+
+        #region Handlers
+        private void MotorUnit_CancelProcess(Guid machineID)
+        {
+            if (machineID == MachineID)
+            {
+                TokenSource.Cancel();
+            }
+        }
         #endregion
     }
 
@@ -30,6 +41,7 @@ namespace WashingMachine
         #region Construction
         public SpinMotorUnit(Guid machineID) : base(machineID, MachineUnitType.SpinMotor, MachineUnitImageType.SpinMotor)
         {
+            InteropMessenger.Instance.Spin += MotorUnit_Execute;
         }
         #endregion
 
@@ -68,6 +80,13 @@ namespace WashingMachine
             }, cancellationToken: TokenSource.Token);
         }
 
+        protected override void OnExecutionFinished()
+        {
+            base.OnExecutionFinished();
+
+            InteropMessenger.Instance.FireActionExecutionFinishedMessage(MachineID, WashingModes.WashingActions.Spin);
+        }
+
         protected override void UpdateUnitState(EventArgs e)
         {
             try
@@ -92,6 +111,13 @@ namespace WashingMachine
         private void CycleTimer_Finished(object sender, ElapsedEventArgs e)
         {
             OnExecutionFinished();
+        }
+        private void MotorUnit_Execute(Guid machineID)
+        {
+            if (machineID == MachineID)
+            {
+                ExecuteCycle();
+            }
         }
         #endregion
     }
@@ -133,13 +159,14 @@ namespace WashingMachine
         #endregion
 
         #region Construction
-        public WashMotorUnit(Guid machineID) : base(machineID, MachineUnitType.SpinMotor, MachineUnitImageType.SpinMotor)
+        public WashMotorUnit(Guid machineID) : base(machineID, MachineUnitType.WashMotor, MachineUnitImageType.WashMotor)
         {
+            InteropMessenger.Instance.Wash += MotorUnit_Execute;
         }
         #endregion
 
         #region Methods
-        protected void ConfigureCycle(TimeSpan miniCycleTime, int miniCyclesCount)
+        public void ConfigureCycle(TimeSpan miniCycleTime, int miniCyclesCount)
         {
             MiniCyclesCount = miniCyclesCount;
             MiniCycleTime = miniCycleTime;
@@ -196,7 +223,12 @@ namespace WashingMachine
                 catch (Exception ex) { Logger.Instance.LogError(ex); }
             }, cancellationToken: TokenSource.Token);
         }
+        protected override void OnExecutionFinished()
+        {
+            base.OnExecutionFinished();
 
+            InteropMessenger.Instance.FireActionExecutionFinishedMessage(MachineID, WashingModes.WashingActions.Wash);
+        }
         protected override void UpdateUnitState(EventArgs e)
         {
             Invoke(new Action(() =>
@@ -211,6 +243,13 @@ namespace WashingMachine
         #endregion
 
         #region Handlers
+        private void MotorUnit_Execute(Guid machineID)
+        {
+            if (machineID == MachineID)
+            {
+                ExecuteCycle();
+            }
+        }
         #endregion
     }
 }

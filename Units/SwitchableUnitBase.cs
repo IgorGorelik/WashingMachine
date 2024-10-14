@@ -20,7 +20,7 @@ namespace WashingMachine
         #endregion
 
         #region Delegates
-        public delegate void ActiveStateChangedEventHandler(object sender, EventArgs e);
+        public delegate void ActiveStateChangedEventHandler(object sender, ActiveStateChangedEventArgs e);
         #endregion
 
         #region Events

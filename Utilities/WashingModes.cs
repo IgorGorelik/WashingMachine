@@ -18,9 +18,6 @@ namespace WashingMachine
             Heat,
             DispenseDetegent,
             Wash,
-            Prewash,
-            Drin,
-            Rinse,
             Drain,
             Spin,
             Finish
@@ -34,13 +31,12 @@ namespace WashingMachine
             public int Temperature { get; set; }
             public int WashingCycleTime { get; set; }
             public int WashingCycles { get; set; }
-            public int RinseCycle { get; set; }
             public int SpinCycle { get; set; }
-            public int PrewashCycle { get; set; }
             public List<WashingActions> Actions { get; set; }
             #endregion
         }
         #endregion
+
         #region Constants
         private const string WashingModesFileName = "WashingModes.json";
         #endregion
@@ -55,6 +51,14 @@ namespace WashingMachine
             get
             {
                 return WashingModesList.Keys.ToList<string>();
+            }
+        }
+
+        public WashingModeInfo this[string mode]
+        {
+            get
+            {
+                return WashingModesList[mode];
             }
         }
         #endregion

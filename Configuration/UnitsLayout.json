@@ -2,51 +2,61 @@
   "PowerSupply": {
     "Location": "0, 1",
     "ClassType": "WashingMachine.PowerSupplyUnit, WashingMachine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-    "InitialState": "Off"
+    "InitialState": "Off",
+    "Enabled": "true"
   },
   "Drum": {
     "Location": "1, 2",
     "ClassType": "WashingMachine.DrumUnit, WashingMachine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-    "InitialState": "Empty"
+    "InitialState": "Empty",
+    "Enabled": "false"
   },
   "WashMotor": {
     "Location": "0, 2",
     "ClassType": "WashingMachine.WashMotorUnit, WashingMachine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-    "InitialState": "Off"
+    "InitialState": "Off",
+    "Enabled": "false"
   },
   "SpinMotor": {
     "Location": "3, 2",
     "ClassType": "WashingMachine.SpinMotorUnit, WashingMachine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-    "InitialState": "Off"
+    "InitialState": "Off",
+    "Enabled": "false"
   },
   "Door": {
     "Location": "1, 0",
     "ClassType": "WashingMachine.DoorUnit, WashingMachine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-    "InitialState": "Opened"
+    "InitialState": "Opened",
+    "Enabled": "false"
   },
   "WaterInletValve": {
     "Location": "3, 1",
     "ClassType": "WashingMachine.WaterInletValveUnit, WashingMachine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-    "InitialState": "Off"
+    "InitialState": "Off",
+    "Enabled": "false"
   },
   "Pump": {
     "Location": "1, 1",
     "ClassType": "WashingMachine.PumpUnit, WashingMachine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-    "InitialState": "Off"
+    "InitialState": "Off",
+    "Enabled": "false"
   },
   "Heater": {
     "Location": "2, 1",
     "ClassType": "WashingMachine.HeaterUnit, WashingMachine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-    "InitialState": "Off"
+    "InitialState": "Off",
+    "Enabled": "false"
   },
   "DetergentDispenser": {
     "Location": "2, 2",
     "ClassType": "WashingMachine.DetergentDispenserUnit, WashingMachine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-    "InitialState": "Irrelevant"
+    "InitialState": "Irrelevant",
+    "Enabled": "false"
   },
   "DisplayPanel": {
     "Location": "2, 0",
     "ClassType": "WashingMachine.DisplayPanelUnit, WashingMachine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-    "InitialState": "Irrelevant"
+    "InitialState": "Irrelevant",
+    "Enabled": "false"
   }
 }
