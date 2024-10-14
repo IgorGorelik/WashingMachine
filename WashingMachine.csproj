@@ -296,7 +296,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Sounds\Finish.mp3">
+    <EmbeddedResource Include="Sounds\Finish.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

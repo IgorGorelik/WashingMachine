@@ -50,7 +50,7 @@
   },
   "Quick": {
     "Temperature": "30",
-    "WashingCycleTime": "10",
+    "WashingCycleTime": "5",
     "WashingCycles": 3,
     "SpinCycle": 10,
     "Actions": [

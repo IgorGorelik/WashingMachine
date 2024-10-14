@@ -136,9 +136,12 @@ namespace WashingMachine
         #endregion
 
         #region Handlers
-        private void Handle_EnableUnit(Guid MachineID, bool enable)
+        private void Handle_EnableUnit(Guid machineID, bool enable)
         {
-            Enabled = enable;
+            if (MachineID == machineID)
+            {
+                Enabled = enable;
+            }
         }
 
         private void Handle_MouseDoubleClick(object sender, MouseEventArgs e)

@@ -28,7 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.addWashingMachineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SuspendLayout();
+            // 
+            // addWashingMachineToolStripMenuItem
+            // 
+            this.addWashingMachineToolStripMenuItem.Name = "addWashingMachineToolStripMenuItem";
+            this.addWashingMachineToolStripMenuItem.Size = new System.Drawing.Size(32, 19);
             // 
             // MainForm
             // 
@@ -43,6 +49,7 @@
         }
 
         #endregion
+        private System.Windows.Forms.ToolStripMenuItem addWashingMachineToolStripMenuItem;
     }
 }
 

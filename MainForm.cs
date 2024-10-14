@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
@@ -7,6 +8,10 @@ namespace WashingMachine
 {
     public partial class MainForm : Form
     {
+        #region Properties
+        public List<WashingMachine> LaundryRoom = new List<WashingMachine>();
+        #endregion
+
         public MainForm()
         {
             InitializeComponent();

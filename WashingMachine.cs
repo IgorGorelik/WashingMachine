@@ -16,7 +16,7 @@ using static WashingMachine.SwitchableUnitBase;
 
 namespace WashingMachine
 {
-    internal class WashingMachine : TableLayoutPanel
+    public class WashingMachine : TableLayoutPanel
     {
         #region Enums
         public enum UnitInitialState
@@ -287,6 +287,11 @@ namespace WashingMachine
 
         private void Handler_ActionExecutionFinished(Guid MachineID, WashingModes.WashingActions action)
         {
+            if(TokenSource == null)
+            {
+                TokenSource = new CancellationTokenSource();    
+            }
+
             Task.Run(async () =>
             {
                 try
@@ -320,16 +325,8 @@ namespace WashingMachine
         {
             try
             {
-                var filePath = Path.Combine(Application.StartupPath, "Sounds", "Finish.mp3");
-
-                using (var source = CodecFactory.Instance.GetCodec(filePath))
-                {
-                    using (var soundOut = new WasapiOut())
-                    {
-                        soundOut.Initialize(source);
-                        soundOut.Play();
-                    }
-                }
+                var filePath = Path.Combine(Application.StartupPath, "Sounds", "Finish.wav");
+                new SoundPlayer(filePath).Play();
             }
             catch (Exception ex)
             {
